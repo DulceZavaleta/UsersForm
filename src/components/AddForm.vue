@@ -5,11 +5,12 @@
                 <v-text-field
                         v-validate="'required|max:40'"
                         v-model="data.name"
+                        name="name"
+                        data-vv-name="nombre"
+                        :error-messages="errors.collect('name')"
                         :counter="40"
-                        :error-messages="errors.collect('nombre')"
                         label="Nombre"
                         placeholder="Nombre Apellidos"
-                        data-vv-name="nombre"
                         box
                         required
                 ></v-text-field>

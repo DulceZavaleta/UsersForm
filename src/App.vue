@@ -7,12 +7,20 @@
                     app
             >
                 <v-list dense>
-                    <v-list-tile v-bind:to="'/home'">
+                    <v-list-tile v-bind:to="'/'">
                         <v-list-tile-action>
                             <v-icon>home</v-icon>
                         </v-list-tile-action>
                         <v-list-tile-content>
                             <v-list-tile-title>Inicio</v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile v-bind:to="'/login'">
+                        <v-list-tile-action>
+                            <v-icon>account_box</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title>Iniciar sesión</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
                     <v-list-tile v-bind:to="'/users'">

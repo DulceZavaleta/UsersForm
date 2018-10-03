@@ -88,7 +88,7 @@
                     <v-list-tile v-if="data.year_of_birth">
                         <v-list-tile-action>
                             <v-icon color="indigo">
-                                event
+                                cake
                             </v-icon>
                         </v-list-tile-action>
 
