@@ -7,8 +7,7 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "node build/build.js",
-    "deploy": "npm run build; push-dir --dir=dist --branch=master --cleanup --allow-unclean"
+    "build": "node build/build.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
