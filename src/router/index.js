@@ -28,6 +28,7 @@ const router = new Router({
 
 const configureAxios = () => {
     router.app.$root.$axios.defaults.baseURL = 'https://v10dev.yeira.training/api/v1';
+    router.app.$axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
     router.app.$root.$axios.interceptors.response.use((response) => {
         return response;
     }, (error) => {

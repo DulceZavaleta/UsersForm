@@ -2,14 +2,25 @@
     <v-layout align-center justify-center>
         <v-layout row wrap>
             <v-container>
+                <v-btn
+                        color="blue-grey"
+                        class="white--text"
+                        @click="dialog=true"
+                >
+                    Agregar usuario
+                    <v-icon right dark>add</v-icon>
+                </v-btn>
+            </v-container>
+            <v-container>
                 <v-data-table
                         :headers="headers"
                         :items="users"
                         :search="search"
-                        :pagination.sync="pagination"
+                        :loading="loader"
                         hide-actions
                         class="elevation-1"
                 >
+                    <v-progress-linear slot="progress" color="blue" :indeterminate="loader"></v-progress-linear>
                     <template slot="headerCell" slot-scope="props">
                         <v-tooltip bottom>
                         <span slot="activator">
@@ -45,7 +56,7 @@
                                 <v-icon class="mr-2" @click="editItem(props.item)">
                                     edit
                                 </v-icon>
-                                <v-icon>
+                                <v-icon @click="deleteUser(props.item)">
                                     delete
                                 </v-icon>
                             </td>
@@ -55,10 +66,12 @@
                         <detail-form :data="props.item">
                         </detail-form>
                     </template>
+                    <template slot="no-data">
+                        <v-alert :value="true" color="error" icon="warning">
+                            No hay datos de usuarios
+                        </v-alert>
+                    </template>
                 </v-data-table>
-                <div class="text-xs-center pt-2">
-                    <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
-                </div>
             </v-container>
         </v-layout>
         <v-dialog v-model="dialog" scrollable max-width="90%">
@@ -68,7 +81,7 @@
                         color="pink"
                         dark
                 >
-                    <v-toolbar-title>Modificar usuario</v-toolbar-title>
+                    <v-toolbar-title>Detalles del usuario</v-toolbar-title>
                     <v-spacer></v-spacer>
                 </v-toolbar>
                 <v-divider></v-divider>
@@ -78,9 +91,9 @@
                 </v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>
-                    <v-btn color="blue darken-1" flat @click="dialog = false">Cancelar
+                    <v-btn color="blue darken-1" flat @click="close()">Cancelar
                     </v-btn>
-                    <v-btn color="blue darken-1" flat @click="dialog = false">Guardar
+                    <v-btn color="blue darken-1" flat @click="saveUser()">Guardar
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -96,11 +109,15 @@
     export default {
         components: {VListTileAction, AddForm, DetailForm},
         name: "users",
+        mounted() {
+            this.getAllUsers();
+        },
         data() {
             return {
                 search: '',
-                pagination: {},
                 selected: [],
+                users: [],
+                loader: true,
                 dialog: false,
                 editedIndex: -1,
                 editedItem: {
@@ -116,12 +133,7 @@
                     phone: '',
                     mobile_phone: 0,
                     active: true,
-                    tags: '',
-                    last_login: '',
-                    ip: '',
-                    created_at: null,
-                    updated_at: null,
-                    deleted_at: null
+                    tags: ''
                 },
                 defaultItem: {
                     id: 0,
@@ -136,12 +148,7 @@
                     phone: '',
                     mobile_phone: 0,
                     active: true,
-                    tags: '',
-                    last_login: '',
-                    ip: '',
-                    created_at: null,
-                    updated_at: null,
-                    deleted_at: null
+                    tags: ''
                 },
                 headers: [
                     {
@@ -154,120 +161,99 @@
                     {text: 'Correo', value: 'email'},
                     {text: 'Activo', value: 'active'},
                     {text: 'Acciones', value: '', sortable: false}
-                ],
-                users: [
-                    {
-                        "id": 63,
-                        "name": "Test",
-                        "email": "correo@test.com",
-                        "avatar": null,
-                        "type": "user",
-                        "address": null,
-                        "country": 0,
-                        "gender": null,
-                        "year_of_birth": null,
-                        "phone": "",
-                        "mobile_phone": "",
-                        "active": true,
-                        "tags": "",
-                        "last_login": "2018-09-27 19:42:58",
-                        "ip": "",
-                        "created_at": "2018-09-27 19:42:58",
-                        "updated_at": "2018-09-27 19:42:58",
-                        "deleted_at": null
-                    },
-                    {
-                        "id": 64,
-                        "name": "Nombre Completo",
-                        "email": "usuario@email.com",
-                        "avatar": null,
-                        "type": "user",
-                        "address": "Dirección",
-                        "country": 0,
-                        "gender": null,
-                        "year_of_birth": null,
-                        "phone": "5555555555",
-                        "mobile_phone": "5555555555",
-                        "active": true,
-                        "tags": "",
-                        "last_login": "2018-10-01 21:57:08",
-                        "ip": "",
-                        "created_at": "2018-10-01 21:57:08",
-                        "updated_at": "2018-10-01 21:57:08",
-                        "deleted_at": null
-                    },
-                    {
-                        "id": 65,
-                        "name": "Nombre Completo",
-                        "email": "usuario323@email.com",
-                        "avatar": null,
-                        "type": "user",
-                        "address": "Dirección",
-                        "country": 0,
-                        "gender": null,
-                        "year_of_birth": null,
-                        "phone": "5555555555",
-                        "mobile_phone": "5555555555",
-                        "active": true,
-                        "tags": "",
-                        "last_login": "2018-10-01 21:58:44",
-                        "ip": "",
-                        "created_at": "2018-10-01 21:58:44",
-                        "updated_at": "2018-10-01 21:58:44",
-                        "deleted_at": null
-                    },
-                    {
-                        "id": 66,
-                        "name": "Nombre Completo",
-                        "email": "usuariowew323@email.com",
-                        "avatar": null,
-                        "type": "user",
-                        "address": "Dirección",
-                        "country": 0,
-                        "gender": null,
-                        "year_of_birth": null,
-                        "phone": "5555555555",
-                        "mobile_phone": "5555555555",
-                        "active": true,
-                        "tags": "",
-                        "last_login": "2018-10-01 22:06:37",
-                        "ip": "",
-                        "created_at": "2018-10-01 22:06:37",
-                        "updated_at": "2018-10-01 22:06:37",
-                        "deleted_at": null
-                    }
                 ]
             }
         },
-        methods:{
-            editItem (item) {
+        methods: {
+            getAllUsers() {
+                this.$axios({
+                    method: 'get',
+                    url: '/users',
+                    params: {
+                        token: this.$cookie.get('authToken')
+                    }
+                }).then((response) => {
+                    this.users = response.data.data;
+                    this.loader = false;
+                });
+            },
+            deleteUser(item) {
+                let dialog = confirm('¿Desea eliminar este elemento?');
+
+                if (dialog) {
+                    this.$axios({
+                        method: 'delete',
+                        url: '/users/' + item.id,
+                        params: {
+                            token: this.$cookie.get('authToken')
+                        }
+                    }).then((response) => {
+                        const index = this.users.indexOf(item);
+                        this.users.splice(index, 1);
+                        window.alert('Usuario eliminado');
+                    });
+                }
+            },
+            saveUser() {
+                if (this.editedIndex > -1) {
+                    this.updateUser();
+                } else {
+                    this.addUser();
+                }
+
+            },
+            addUser(){
+                this.$axios({
+                    method: 'post',
+                    url: '/users',
+                    params: {
+                        token: this.$cookie.get('authToken')
+                    },
+                    data: this.editedItem
+                }).then((response) => {
+                    this.users.push(response.data.data);
+                    this.close();
+                    window.alert('Usuario agregado');
+                }).catch(() => {
+                    this.close();
+                });
+            },
+            updateUser(){
+                if (this.users[this.editedIndex].email === this.editedItem.email) {
+                    delete this.editedItem.email;
+                }
+                this.$axios({
+                    method: 'put',
+                    url: '/users/' + this.editedItem.id,
+                    params: {
+                        token: this.$cookie.get('authToken')
+                    },
+                    data: this.editedItem
+                }).then((response) => {
+                    Object.assign(this.users[this.editedIndex], response.data.data);
+                    this.close();
+                    window.alert('Usuario modificado satisfactoriamente');
+                }).catch(() => {
+                    this.close();
+                });
+            },
+            editItem(item) {
                 this.editedIndex = this.users.indexOf(item);
                 this.editedItem = Object.assign({}, item);
                 this.dialog = true;
             },
-            close () {
-                this.dialog = false
-                setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
-                    this.editedIndex = -1
-                }, 300)
+            close() {
+                this.dialog = false;
+                this.editedItem = Object.assign({}, this.defaultItem);
+                this.editedIndex = -1
             },
-            save () {
+            save() {
                 if (this.editedIndex > -1) {
                     Object.assign(this.desserts[this.editedIndex], this.editedItem)
                 } else {
                     this.desserts.push(this.editedItem)
                 }
                 this.close()
-            }
-        },
-        computed: {
-            pages() {
-                if (this.pagination.rowsPerPage == null ||
-                    this.pagination.totalItems == null
-                ) return 0
-
-                return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
             }
         }
     }

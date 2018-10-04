@@ -3,9 +3,8 @@
         <v-layout row wrap>
             <v-flex mr-3>
                 <v-text-field
-                        v-validate="'required|max:40'"
+                        v-validate="'required'"
                         v-model="data.name"
-                        name="name"
                         data-vv-name="nombre"
                         :error-messages="errors.collect('name')"
                         :counter="40"
@@ -20,7 +19,7 @@
                         v-validate="'required|email'"
                         v-model="data.email"
                         :error-messages="errors.collect('email')"
-                        label="E-mail"
+                        label="Email"
                         placeholder="hola@ejemplo.com"
                         data-vv-name="email"
                         required
@@ -31,24 +30,24 @@
         <v-layout>
             <v-flex mr-3>
                 <v-text-field
-                        v-validate="'required|numeric'"
+                        v-validate="'required'"
                         v-model="data.phone"
                         :error-messages="errors.collect('phone')"
                         label="Teléfono"
                         placeholder="1235213"
-                        data-vv-name="phone"
+                        data-vv-name="telefono"
                         required
                         box
                 ></v-text-field>
             </v-flex>
             <v-flex>
                 <v-text-field
-                        v-validate="'required|numeric'"
+                        v-validate="'required'"
                         v-model="data.mobile_phone"
                         :error-messages="errors.collect('mobile_phone')"
                         label="Teléfono celular"
                         placeholder="1235213"
-                        data-vv-name="mobile_phone"
+                        data-vv-name="celular"
                         required
                         box
                 ></v-text-field>
@@ -57,21 +56,19 @@
         <v-layout>
             <v-flex mr-3>
                 <v-text-field
-                        v-validate="'required|decimal:4'"
+                        v-validate="'digits:4'"
                         v-model="data.year_of_birth"
-                        :error-messages="errors.collect('year_of_birth')"
+                        :error-messages="errors.collect('año')"
                         label="Año de nacimiento"
                         placeholder="1990"
-                        data-vv-name="año de nacimiento"
+                        data-vv-name="año"
                         box
                         required
                 ></v-text-field>
             </v-flex>
             <v-flex>
                 <v-text-field
-                        v-validate="'required'"
                         v-model="data.type"
-                        :error-messages="errors.collect('type')"
                         label="Tipo"
                         placeholder="user"
                         data-vv-name="type"
@@ -84,9 +81,7 @@
             <v-flex mr-3>
                 <v-select
                         :items="genderList"
-                        v-validate="'required'"
                         v-model="data.gender"
-                        :error-messages="errors.collect('gender')"
                         label="Género"
                         placeholder="25"
                         data-vv-name="género"
@@ -96,9 +91,9 @@
             </v-flex>
             <v-flex>
                 <v-text-field
-                        v-validate="'required'"
+                        v-validate="'numeric'"
                         v-model="data.country"
-                        :error-messages="errors.collect('select')"
+                        :error-messages="errors.collect('país')"
                         label="País"
                         placeholder="25"
                         data-vv-name="país"
@@ -109,24 +104,22 @@
         </v-layout>
         <v-flex>
             <v-text-field
-                    v-validate="'required'"
                     v-model="data.address"
-                    :error-messages="errors.collect('address')"
                     label="Dirección"
                     placeholder="Calle número, colonia, ciudad"
-                    data-vv-name="Dirección"
+                    data-vv-name="direccion"
                     box
                     required
             ></v-text-field>
         </v-flex>
         <v-flex>
             <v-text-field
-                    v-validate="'required'"
+                    v-validate="{  }"
                     v-model="data.tags"
-                    :error-messages="errors.collect('tags')"
+                    :error-messages="errors.collect('etiquetas')"
                     label="Etiquetas"
                     placeholder="uno,dos,tres"
-                    data-vv-name="tags"
+                    data-vv-name="etiquetas"
                     box
                     required
             ></v-text-field>
@@ -134,10 +127,10 @@
         <v-checkbox
                 v-validate="'required'"
                 v-model="data.active"
-                :error-messages="errors.collect('checkbox')"
+                :error-messages="errors.collect('activo')"
                 value=""
                 label="Activo"
-                data-vv-name="checkbox"
+                data-vv-name="activo"
                 type="checkbox"
                 required
         ></v-checkbox>

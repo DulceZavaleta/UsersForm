@@ -131,8 +131,7 @@
                             <div class="text-xs-center">
                                 <v-chip label
                                         v-for="(item, index) in (splitTags(data.tags))"
-                                        :key="index"
-                                        :value="item">
+                                        :key="index">
                                     {{item}}
                                 </v-chip>
                             </div>

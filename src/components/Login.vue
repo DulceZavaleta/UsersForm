@@ -9,11 +9,11 @@
                     <form>
                         <v-text-field
                                 prepend-icon="person"
-                                data-vv-name="usuario"
-                                :error-messages="errors.collect('usuario')"
-                                v-model="form.user"
+                                data-vv-name="email"
+                                :error-messages="errors.collect('email')"
+                                v-model="form.email"
                                 v-validate="formRules.email"
-                                label="Usuario"
+                                label="Email"
                                 type="text"
                                 required>
                         </v-text-field>
@@ -43,7 +43,7 @@
         data() {
             return {
                 form: {
-                    user: '',
+                    email: '',
                     password: ''
                 },
                 formRules: {
@@ -69,7 +69,8 @@
                     url: '/authenticate',
                     data: this.form
                 }).then((response) => {
-                    window.alert(response.data.token);
+                    this.$cookie.set('authToken', response.data.token, {expires: '2h'});
+                    window.alert('Autentificado');
                 });
             }
         }
